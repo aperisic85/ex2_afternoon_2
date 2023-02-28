@@ -33,7 +33,7 @@ fn main(){
     //println!("path is: {} ", curent.to_str().unwrap());
 
     let test_string = r#"C:\Users\ante\Development\rustrepo\google-comprehesive\ex2_afternoon_2"#;
-    let wild_string = r#"C:\.*\ex2_afternoon_2"#;
+    let wild_string = r#"C:\.*"#;
 
     if prefix_matches(wild_string, curent.to_str().unwrap()) {
         println!("good");
