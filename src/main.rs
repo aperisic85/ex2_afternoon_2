@@ -12,13 +12,15 @@ pub fn prefix_matches(prefix: &str, request_path: &str) -> bool {
             .map(|p| Some(p))
             .chain(once(None));
 
-
+        let mut last_pref = " ";
         for (prefix, request_path) in prefix_iter.zip(paths){
             match request_path {
                 Some(request_path) => {
-                    if (prefix != "*") && (prefix != request_path) {return false;}
+                    if (prefix != "*") && (prefix != request_path) && (prefix != ".*") {return false;}
+                    if prefix == ".*" {last_pref = prefix;}
                 }
-                None => return false,
+                None => if last_pref == ".*" {return true}
+                        else {return false},
             }
 
         }
@@ -30,10 +32,10 @@ fn main(){
     let curent = current_dir().unwrap();
     //println!("path is: {} ", curent.to_str().unwrap());
 
-    let test_string = r#"C:\Users\*\Development\rustrepo\google-comprehesive\ex2_afternoon_2"#;
-    let wild_string = r#"C:\*\*\*\*\ex2_afternoon_2"#;
+    let test_string = r#"C:\Users\ante\Development\rustrepo\google-comprehesive\ex2_afternoon_2"#;
+    let wild_string = r#"C:\.*\ex2_afternoon_2"#;
 
-    if prefix_matches(test_string, curent.to_str().unwrap()) {
+    if prefix_matches(wild_string, curent.to_str().unwrap()) {
         println!("good");
     }
     else {
